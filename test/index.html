@@ -1,0 +1,34 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Trigger测试页面</title>
+</head>
+<body>
+<script type="text/javascript">
+function define(factory){
+	window.Trigger = factory();
+}
+</script>
+<script type="text/javascript" src="../lib/trigger.js"></script>
+<script type="text/javascript">
+var Mod = {
+	callback: function(param, reg){
+		console.log(arguments);
+		// if (reg.name == 'r3') return false;
+	}
+};
+var Tr = new Trigger(Mod, [
+	{name:'r1', signals:'s1', event:'callback'},
+	{name:'r2', signals:'@r1,@r3,@r4,s1,*s2', event:'callback'},
+	{name:'r3', signals:'@r4,s1', event:'callback'},
+	{name:'r4', signals:'@ext,s1', event:'callback'},
+]);
+console.log(Tr);
+
+Tr.signal('s1', 'test');
+setTimeout(function(){
+	Tr.resolve('ext');
+}, 3000);
+</script>
+</body></html>
+
